@@ -47,6 +47,7 @@ describe('LRUCache', function() {
     const cacheItem3 = cache.get('key3');
 
     assert(cacheItem1.equals(Buffer.from('1')));
+    console.log(cacheItem2)
     assert.equal(cacheItem2, undefined);
     assert(cacheItem3.equals(Buffer.from('3')));
   });

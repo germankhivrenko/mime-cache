@@ -39,11 +39,11 @@ class LRUCache {
     }
 
     let availableSize = this.#maxSize - this.#size;
-    let lruKey = this.#map.keys().next();
 
     while (bufferSize > availableSize) {
-      const {size} = this.#map.get(lruKey.value);
-      this.#map.delete(lruKey.value);
+      const lruKey = this.#map.keys().next().value;
+      const {size} = this.#map.get(lruKey);
+      this.#map.delete(lruKey);
 
       this.#size -= size;
       availableSize += size;

@@ -9,7 +9,10 @@
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
+  "devDependencies": {
     "mocha": "10.0.0"
+  },
+  "dependencies": {
+    "undici": "5.10.0"
   }
 }
