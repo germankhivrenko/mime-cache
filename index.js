@@ -1,4 +1,6 @@
+import undici from 'undici';
 import {Fetcher} from './fetcher.js';
+import {CachedFetcher} from './cached-fetcher.js';
 
 const urls = [
   'https://i.picsum.photos/id/698/200/300.jpg?hmac=2Z_fr-yUH1ByQu36MAR319aTCndT4FjG1VBksAKGVKU',
@@ -11,9 +13,10 @@ const urls = [
   'https://i.picsum.photos/id/698/200/300.jpg?hmac=2Z_fr-yUH1ByQu36MAR319aTCndT4FjG1VBksAKGVKU',
 ];
 
-const fetcher = new Fetcher();
+const fetcher = new Fetcher(undici.fetch);
+const cachedFetcher = new CachedFetcher(fetcher);
 
 for (const url of urls) {
-  await fetcher.fetch(url);
+  await cachedFetcher.fetch(url);
 }
 

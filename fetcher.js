@@ -1,26 +1,14 @@
-import undici from 'undici';
-import {LRUCache} from './lru-cache.js';
-
 class Fetcher {
-  #cache;
+  #fetch;
 
-  constructor() {
-    this.#cache = new LRUCache(50 * 1024);
+  constructor(fetch) {
+    this.#fetch = fetch;
   }
 
   async fetch(url) {
-    const item = this.#cache.get(url);
-
-    if (item) {
-      console.log(`IN CACHE, bytes: ${Buffer.byteLength(item)}`);
-      return item;
-    }
-
-    const response = await undici.fetch(url);
-    const buff = await this.#toBuffer(response.body);
-    console.log(`DOWLOADED, bytes: ${Buffer.byteLength(buff)}`);
-    
-    this.#cache.set(url, buff);
+    const response = await this.#fetch(url);
+    const item = await this.#toBuffer(response.body);
+    console.log(`DOWLOADED, bytes: ${Buffer.byteLength(item)}`);
 
     return item;
   }
