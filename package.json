@@ -6,11 +6,13 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "mocha **/*.test.js"
+    "test": "mocha **/*.test.js",
+    "lint": "eslint **/*.js"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "eslint": "8.22.0",
     "mocha": "10.0.0"
   },
   "dependencies": {
