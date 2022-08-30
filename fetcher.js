@@ -1,14 +1,16 @@
 class Fetcher {
   #fetch;
+  #logger;
 
-  constructor(fetch) {
+  constructor(fetch, logger) {
     this.#fetch = fetch;
+    this.#logger = logger;
   }
 
   async fetch(url) {
     const response = await this.#fetch(url);
     const item = await this.#toBuffer(response.body);
-    console.log(`DOWLOADED, bytes: ${Buffer.byteLength(item)}`);
+    this.#logger.log(`DOWLOADED, bytes: ${Buffer.byteLength(item)}`);
 
     return item;
   }

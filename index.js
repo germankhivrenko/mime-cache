@@ -1,22 +1,20 @@
+import fs from 'node:fs';
+import readline from 'node:readline';
 import undici from 'undici';
+import {Logger} from './logger.js';
 import {Fetcher} from './fetcher.js';
 import {CachedFetcher} from './cached-fetcher.js';
 
-const urls = [
-  'https://i.picsum.photos/id/698/200/300.jpg?hmac=2Z_fr-yUH1ByQu36MAR319aTCndT4FjG1VBksAKGVKU',
-  'https://i.picsum.photos/id/698/200/300.jpg?hmac=2Z_fr-yUH1ByQu36MAR319aTCndT4FjG1VBksAKGVKU',
-  'https://i.picsum.photos/id/62/200/300.jpg?hmac=Ova5b3XqMVygL4ZvFJ1MfAehiXKiM1Ol14jN_6widUY',
-  'https://i.picsum.photos/id/360/200/300.jpg?hmac=Fl1CgUfxrFjmcS1trYDG80XpEjYixcXfc2uTtCxFkDw',
-  'https://i.picsum.photos/id/656/200/300.jpg?hmac=zNqhDDzELUTnZCZ7v7jsgm_qu5rVv4qCgahu6YqfG_A',
-  'https://i.picsum.photos/id/178/200/300.jpg?hmac=o3W6XkZMX-Pv9EKaOaE6vvt4JpToHfjivAGRrpFuhiw',
-  'https://i.picsum.photos/id/502/200/300.jpg?hmac=aHrprSZ5m8KmqTIrgi4dr8YmRjrN_BppdP5jCNrXB0E',
-  'https://i.picsum.photos/id/698/200/300.jpg?hmac=2Z_fr-yUH1ByQu36MAR319aTCndT4FjG1VBksAKGVKU',
-];
+const urls = readline.createInterface({
+  input: fs.createReadStream('input.txt')
+});
 
-const fetcher = new Fetcher(undici.fetch);
-const cachedFetcher = new CachedFetcher(fetcher);
+const logger = new Logger(fs.createWriteStream('output.txt'))
+const fetcher = new CachedFetcher(new Fetcher(undici.fetch, logger), logger);
 
-for (const url of urls) {
-  await cachedFetcher.fetch(url);
+for await (const url of urls) {
+  await fetcher.fetch(url);
 }
+
+await logger.close();
 
